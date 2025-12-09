@@ -1,14 +1,7 @@
 # 鱼头朝向指示器 Fish Compass
 
-在线地址（GitHub Pages）：https://RootPen.github.io/fish-compass/
+在线地址（GitHub Pages）：https://rotopen.github.io/fish-compass/
 
-快速发布（GitHub Desktop 简表）：
-- Add existing repository 选择项目根 → Commit to main → Publish repository
-- 仓库 Settings → Pages：Source 选 main / (root) → 保存
-- 几分钟后访问上方链接即可
-## 更新与发布（GitHub Desktop）
-- 修改后在 Desktop 中填写提交信息 → Commit to main → Push origin
-- 等待片刻，GitHub Pages 自动更新
 # 鱼头朝向指示器 Fish Compass
 
 一个半严肃、半实用的网页工具，帮你在全国任意酒店包间中快速决定鱼头朝向、主陪/副陪座位与敬酒节奏。输入地域流派、入门方向、桌型与人数，系统会自动输出“夸张却有理有据”的方案，并给出文化解释。
@@ -59,26 +52,3 @@
   - `script.js` 中的 `preloadTableContours()` 会读取 `assetSources.tables` 指定的 PNG，根据 alpha 通道抽样 96 个角度，生成座椅排布半径。
   - 若替换为自定义桌面，只需保持透明背景与居中摆放，即可精准匹配。
 
-## 免费发布方案（GitHub Pages）
-
-1. 在 GitHub 创建一个 **公开仓库**，例如 `fish-compass`。
-2. 推送本项目文件：
-   ```bash
-   git init
-   git remote add origin git@github.com:your-name/fish-compass.git
-   git add .
-   git commit -m "feat: fish compass"
-   git push -u origin main
-   ```
-3. 打开仓库 `Settings > Pages`：
-   - **Source** 选择 `Deploy from a branch`
-   - **Branch** 选择 `main / (root)`
-4. 保存后约数十秒即可获得 `https://your-name.github.io/fish-compass/` 的免费链接。
-
-## 后续规划建议
-
-- 加入实际酒店平面图上传或 AR 指北功能。
-- 提供地区自定义文案与截图导出。
-- 接入第三方地图 API 做“城市方位”联动。
-
-欢迎提交 Issue/PR 共同完善这个“文化解释型娱乐工具”。
