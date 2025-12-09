@@ -281,6 +281,8 @@ if (refs.dialPad) {
 
 const customSelects = [];
 initCustomSelects();
+applyDirectionLabelAngles();
+window.addEventListener("resize", applyDirectionLabelAngles);
 
 function handleUpdate() {
   const plan = composePlan();
@@ -301,6 +303,25 @@ function initCustomSelects() {
         widget.root.classList.remove("is-open");
       }
     });
+  });
+}
+
+function applyDirectionLabelAngles() {
+  const ring = refs.dialPad?.querySelector(".dial-marker-ring");
+  if (!ring) return;
+  const bounds = ring.getBoundingClientRect();
+  const centerX = bounds.width / 2;
+  const centerY = bounds.height / 2;
+  const radius = Math.max(0, Math.min(centerX, centerY) - 18);
+  const spans = ring.querySelectorAll("span");
+  spans.forEach((span) => {
+    const key = span.dataset.dir;
+    const baseDeg = directionMap[key]?.degree ?? 0;
+    const rad = ((baseDeg - 90) * Math.PI) / 180;
+    const x = centerX + Math.cos(rad) * radius;
+    const y = centerY + Math.sin(rad) * radius;
+    span.style.left = `${x}px`;
+    span.style.top = `${y}px`;
   });
 }
 

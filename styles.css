@@ -607,12 +607,27 @@ body::before {
 
 .compass-north {
   position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  letter-spacing: 0.4em;
-  font-size: 0.75rem;
-  color: var(--muted);
+  top: -28px;
+  right: -28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.35rem 0.6rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid var(--stroke);
+  letter-spacing: 0.25em;
+  font-size: 0.78rem;
+  color: var(--text);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  z-index: 6;
+}
+
+.compass-north::before {
+  content: "▲";
+  font-size: 0.8rem;
+  color: var(--accent);
+  line-height: 1;
 }
 
 .dial-marker-ring {
@@ -624,6 +639,7 @@ body::before {
   justify-content: center;
   align-items: center;
   pointer-events: none;
+  z-index: 3;
 }
 
 .dial-marker-ring span {
@@ -631,8 +647,9 @@ body::before {
   font-size: 0.72rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  transform-origin: center -160px;
+  transform: translate(-50%, -50%);
   transition: all 0.3s ease;
+  z-index: 3;
 }
 
 /* 主方位：东南西北 - 明显 */
@@ -657,48 +674,8 @@ body::before {
   opacity: 0.7;
 }
 
-.dial-marker-ring span[data-dir="north"] {
-  top: 6%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.dial-marker-ring span[data-dir="northeast"] {
-  top: 18%;
-  right: 18%;
-}
-
-.dial-marker-ring span[data-dir="east"] {
-  top: 50%;
-  right: 4%;
-  transform: translateY(-50%) rotate(90deg);
-}
-
-.dial-marker-ring span[data-dir="southeast"] {
-  bottom: 18%;
-  right: 18%;
-}
-
-.dial-marker-ring span[data-dir="south"] {
-  bottom: 6%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.dial-marker-ring span[data-dir="southwest"] {
-  bottom: 18%;
-  left: 18%;
-}
-
-.dial-marker-ring span[data-dir="west"] {
-  top: 50%;
-  left: 4%;
-  transform: translateY(-50%) rotate(-90deg);
-}
-
-.dial-marker-ring span[data-dir="northwest"] {
-  top: 18%;
-  left: 18%;
+.stage-arrow span {
+  display: none;
 }
 
 .dial-pointer {
@@ -894,20 +871,10 @@ body::before {
   pointer-events: none;
   transition: transform 0.08s cubic-bezier(0.4, 0, 0.6, 1);
   will-change: transform;
-  animation: pointerShake 3s ease-in-out infinite;
+  display: none;
 }
 
-@keyframes pointerShake {
-  0%, 100% {
-    transform: translate(-50%, -100%) rotate(0deg);
-  }
-  25% {
-    transform: translate(-50%, -100%) rotate(1deg);
-  }
-  75% {
-    transform: translate(-50%, -100%) rotate(-1deg);
-  }
-}
+/* Pointer wobble animation removed for clarity; keep static indicator */
 
 .door-indicator span {
   position: absolute;
