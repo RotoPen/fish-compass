@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="鱼头朝向指示器：为不同地域酒店宴席提供专业的鱼头摆放与座次建议。"
+    />
+    <title>鱼头朝向指示器 · Fish Compass</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <main class="app-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">中华宴席文化辅助工具</p>
+          <h1>鱼头朝向指示器</h1>
+          <p class="lede">
+            根据地域习俗与包间格局,快速确定鱼头朝向与座次安排
+          </p>
+        </div>
+      </header>
+
+      <section class="workspace" id="workspace">
+        <section class="panel controls" aria-label="输入参数">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">参数面板</p>
+              <h2>定制你的鱼头策略</h2>
+            </div>
+            <button class="ghost" id="resetBtn" type="button">回到默认</button>
+          </div>
+
+          <form class="control-grid" id="advisoryForm">
+            <!-- 隐藏的入门朝向输入,由旋钮控制 -->
+            <input type="hidden" id="entryDirection" value="north" data-sync />
+            
+            <label class="field">
+              <span>地域流派</span>
+              <select id="regionSelect" data-sync>
+                <option value="north">华北迎门派</option>
+                <option value="south">江南尊长派</option>
+                <option value="east">东部向日派</option>
+                <option value="southwest">西南烟火派</option>
+                <option value="coastal">沿海景观派</option>
+                <option value="hk">港澳仪式派</option>
+              </select>
+            </label>
+
+            <div class="field dial-control-wrapper">
+              <span>入门朝向</span>
+              <p class="dial-hint">拖动右侧旋钮调整门向</p>
+            </div>
+
+            <label class="field">
+              <span>桌型</span>
+              <select id="tableShape" data-sync>
+                <option value="round">圆桌 · 国标</option>
+                <option value="oval">椭圆 · 商务包型</option>
+                <option value="square">方桌 · 新派融合</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>座椅数量 <strong id="seatCountLabel">10席</strong></span>
+              <input
+                type="range"
+                id="seatCount"
+                min="6"
+                max="16"
+                value="10"
+                step="2"
+                data-sync
+              />
+            </label>
+
+            <label class="field">
+              <span>呈现风格</span>
+              <select id="vibeLevel" data-sync>
+                <option value="balanced">标准：兼顾专业与通俗</option>
+                <option value="calm">庄重：强调传统礼仪</option>
+                <option value="bold">生动：突出文化特色</option>
+              </select>
+            </label>
+
+            <label class="toggle">
+              <input type="checkbox" id="screenshotMode" data-sync />
+              <span>简洁模式（精简文字、突出图形）</span>
+            </label>
+          </form>
+
+          <p class="context">
+            根据包间实际格局（门向、桌型、人数）与地域习俗，系统将给出专业的鱼头摆放与座次建议。
+          </p>
+
+          <!-- 地域差异索引 -->
+          <div class="legend-section">
+            <div class="legend-head">
+              <p class="eyebrow">地域差异索引</p>
+              <h3>六大流派对比</h3>
+            </div>
+            <div class="region-grid" id="regionGrid"></div>
+          </div>
+        </section>
+
+        <section class="panel results" aria-live="polite">
+          <div class="immersive-stage">
+            <div class="stage-info">
+              <p class="eyebrow">全景桌面视角</p>
+              <h2 id="stageTitle">华北迎门派 · 正北门向</h2>
+              <div class="stage-tags">
+                <span class="soft-pill" id="stageRegionTag">华北迎门派</span>
+                <span class="soft-pill" id="stageDoorTag">门向 正北</span>
+                <span class="soft-pill" id="stageTableTag">圆桌 · 对称敬酒</span>
+              </div>
+              <p id="stageNarrative">
+                大门正北，鱼头直接迎宾，配合圆桌对称排布，方便全桌读懂主位。
+              </p>
+            </div>
+            <div class="stage-visual">
+              <div class="dial-shell">
+                <div class="dial-glow"></div>
+                <div class="dial-track dial-track--outer"></div>
+                <div class="dial-track dial-track--mid"></div>
+                <div class="dial-track dial-track--inner"></div>
+                <div
+                  class="dial-pad"
+                  id="dialPad"
+                  role="slider"
+                  tabindex="0"
+                  aria-label="旋转方位盘"
+                  aria-valuemin="0"
+                  aria-valuemax="315"
+                >
+                  <div class="compass-north">正北</div>
+                  <div class="dial-marker-ring">
+                    <span data-dir="north">北</span>
+                    <span data-dir="northeast">东北</span>
+                    <span data-dir="east">东</span>
+                    <span data-dir="southeast">东南</span>
+                    <span data-dir="south">南</span>
+                    <span data-dir="southwest">西南</span>
+                    <span data-dir="west">西</span>
+                    <span data-dir="northwest">西北</span>
+                  </div>
+                  <div class="dial-pointer" id="dialPointer">
+                    <span>入口</span>
+                  </div>
+                  <div class="compass-ring">
+                    <div class="door-indicator" id="doorIndicator">
+                      <span>入口</span>
+                    </div>
+                    <div class="stage-table stage-table--round" id="stageTable">
+                      <div class="seat-ring" id="seatRing"></div>
+                      <div class="stage-fish" id="stageFish" aria-hidden="true"></div>
+                      <div class="stage-arrow" id="stageArrow">
+                        <span>鱼头</span>
+                      </div>
+                    </div>
+                    <div class="region-pin" id="regionPin">华北</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="plan-header" id="planHeader">
+            <div>
+              <span class="soft-pill" id="regionBadge">华北迎门派</span>
+              <h2 id="planMood">迎门不失礼</h2>
+            </div>
+            <div class="plan-meta">
+              <span id="vibeTagline">礼仪 60 · 恶搞 40</span>
+              <button class="ghost" id="copyBtn" type="button">复制方案</button>
+            </div>
+          </div>
+
+          <div class="result-grid">
+            <article class="card orientation">
+              <div class="card-head">
+                <p class="eyebrow">鱼头朝向</p>
+                <span class="soft-pill" id="tableLabel">圆桌 · 对称敬酒</span>
+              </div>
+              <h3 id="orientationOutput">正北 · 面向入门贵客</h3>
+              <p id="orientationDetail">
+                华北流派讲究“迎门即迎贵”，鱼头锁定门向，宾客一落座就能感知主位。
+              </p>
+              <div class="table-visual" aria-hidden="true">
+                <div class="table-graphic">
+                  <div class="table-center"></div>
+                  <div class="table-arrow" id="arrowIndicator"></div>
+                </div>
+                <div class="seat-legend">
+                  <span>主陪 · <strong id="hostSeat">12点位 · 面门</strong></span>
+                  <span>副陪 · <strong id="viceSeat">5点位 · 护主</strong></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="card seating">
+              <div class="card-head">
+                <p class="eyebrow">座次与流程</p>
+                <span class="soft-pill" id="seatFlow">先主陪后贵宾，顺时针落座</span>
+              </div>
+              <ul class="seat-list" id="seatHighlights"></ul>
+            </article>
+
+            <article class="card etiquette">
+              <div class="card-head">
+                <p class="eyebrow">地域差异提示</p>
+                <span class="soft-pill">结合门向解析</span>
+              </div>
+              <ul id="etiquetteList"></ul>
+            </article>
+
+            <article class="card reasoning">
+              <div class="card-head">
+                <p class="eyebrow">算法为什么这样判定</p>
+              </div>
+              <div class="highlight-row" id="highlightRow"></div>
+              <p id="reasonBlock">
+                将“门向”作为尊位基准，再叠加华北迎门派的迎客逻辑，并考虑圆桌的对称落位，形成此方案。
+              </p>
+              <p class="region-story" id="regionStory">
+                华北酒店常用“看门见山”的方式确认主位，一旦鱼头锁住门向，谁敬酒也不会犹豫。
+              </p>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel arcade" aria-label="付款小游戏占位">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">付款小游戏</p>
+            <h2>买单环节小剧场</h2>
+          </div>
+          <span class="soft-pill">纯视觉占位，无支付能力</span>
+        </div>
+        <div class="arcade-body">
+          <div class="arcade-copy">
+            <p class="lede">模拟“抢着买单”的气氛：谁能最快点亮收款条，谁就赢得请客荣耀。</p>
+            <ul class="arcade-steps">
+              <li>1) 选择场景：商务/家宴/朋友局</li>
+              <li>2) 点击“闪付”按钮连击三次</li>
+              <li>3) 收款条满格后，提示“请客成功”</li>
+            </ul>
+            <p class="muted-note">后续可接入真实支付或小游戏脚本，此处先占位演示。</p>
+          </div>
+          <div class="arcade-board">
+            <div class="meter">
+              <div class="meter-fill" style="width: 55%"></div>
+              <div class="meter-label">收款条 · 55%</div>
+            </div>
+            <button class="cta" type="button" aria-label="闪付占位按钮">闪付连击</button>
+            <p class="muted-note">提示：仅为视觉框架，未接支付接口。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js" type="module"></script>
+  </body>
+</html>

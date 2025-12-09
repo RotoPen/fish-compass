@@ -1,0 +1,84 @@
+# 鱼头朝向指示器 Fish Compass
+
+在线地址（GitHub Pages）：https://RootPen.github.io/fish-compass/
+
+快速发布（GitHub Desktop 简表）：
+- Add existing repository 选择项目根 → Commit to main → Publish repository
+- 仓库 Settings → Pages：Source 选 main / (root) → 保存
+- 几分钟后访问上方链接即可
+## 更新与发布（GitHub Desktop）
+- 修改后在 Desktop 中填写提交信息 → Commit to main → Push origin
+- 等待片刻，GitHub Pages 自动更新
+# 鱼头朝向指示器 Fish Compass
+
+一个半严肃、半实用的网页工具，帮你在全国任意酒店包间中快速决定鱼头朝向、主陪/副陪座位与敬酒节奏。输入地域流派、入门方向、桌型与人数，系统会自动输出“夸张却有理有据”的方案，并给出文化解释。
+
+## 功能亮点
+
+- **一屏交互**：参数输入与结果呈现在同一页面，桌面端首屏即可完成全部决策。
+- **地域逻辑内置**：内置华北迎门、江南尊长、东部向日等 6 大流派的鱼头文化差异与礼仪提示。
+- **动态视觉**：圆桌示意图和箭头随输入实时旋转，便于截图与展示。
+- **资产随取随用**：`资源/` 目录中附带鱼、桌、椅 PNG，可直接在 UI 中调用或自行替换。
+- **轮廓自动识别**：程序会读取桌面 PNG 的透明像素，自动推断有效轮廓并环绕排布座椅，无需手写半径参数。
+- **保险柜式方位盘**：全景桌面视角带有可拖拽/滚轮/键盘控制的 8 方位转盘，旋转即可切换门向。
+- **仪式感刻度**：可切换“稳重 / 标准 / 戏剧”三种语气，满足商务与社交媒体双场景。
+- **截图模式**：一键隐藏长段文字，保留关键视觉与结论，方便录屏或发朋友圈。
+- **复制摘要**：一键拷贝完整方案文字，直接发给同事或主办方。
+
+## 目录结构
+
+```
+├── index.html      # 单页应用骨架
+├── styles.css      # 玻璃拟态 + 霓虹风格样式
+├── script.js       # 地域逻辑、交互与渲染
+├── 资源/           # 鱼、桌子、座椅 PNG 示例
+└── README.md
+```
+
+## 本地预览
+
+1. 克隆或下载此项目。
+2. 直接用浏览器打开 `index.html` 即可。
+3. 若需本地服务器体验，可在项目根目录执行：
+   ```bash
+   npx serve .
+   ```
+
+## 自定义指南
+
+- **替换视觉**：
+  - `资源/鱼`、`资源/桌子`、`资源/座椅` 下的 PNG 会被 `script.js` 中的 `assetSources` 自动引用，替换图片即可生效。
+  - `.hero-visual` 区块与 `.table-visual` 仍可继续添加品牌化背景。
+- **新增地域流派**：
+  - 在 `script.js` 的 `regionRules` 中新增条目，定义 `orientation`、`etiquette`、`palette`、`story` 等字段。
+- **桌型或仪式感模式**：
+  - `tableBlueprints` 与 `vibeProfiles` 控制桌型说明与语气，可按项目需求扩展。
+- **配色与字体**：
+  - 样式变量集中在 `styles.css` 的 `:root`，即可调节霓虹色或字体。
+- **桌面轮廓识别**：
+  - `script.js` 中的 `preloadTableContours()` 会读取 `assetSources.tables` 指定的 PNG，根据 alpha 通道抽样 96 个角度，生成座椅排布半径。
+  - 若替换为自定义桌面，只需保持透明背景与居中摆放，即可精准匹配。
+
+## 免费发布方案（GitHub Pages）
+
+1. 在 GitHub 创建一个 **公开仓库**，例如 `fish-compass`。
+2. 推送本项目文件：
+   ```bash
+   git init
+   git remote add origin git@github.com:your-name/fish-compass.git
+   git add .
+   git commit -m "feat: fish compass"
+   git push -u origin main
+   ```
+3. 打开仓库 `Settings > Pages`：
+   - **Source** 选择 `Deploy from a branch`
+   - **Branch** 选择 `main / (root)`
+4. 保存后约数十秒即可获得 `https://your-name.github.io/fish-compass/` 的免费链接。
+
+## 后续规划建议
+
+- 加入实际酒店平面图上传或 AR 指北功能。
+- 提供地区自定义文案与截图导出。
+- 接入第三方地图 API 做“城市方位”联动。
+
+欢迎提交 Issue/PR 共同完善这个“文化解释型娱乐工具”。
